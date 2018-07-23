@@ -7,7 +7,7 @@ function addurl($url) {
 }
 function checkurl($url) {
     $befores = array("https://www.","https://","http://www.","http://");
-    $middles = array("网址1",""网址2",""网址3");
+    $middles = array("网址1","网址2","网址3");
     $afters = array("/link");
     foreach ($befores as $before) {
         foreach ($middles as $middle) {
