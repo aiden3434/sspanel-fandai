@@ -21,19 +21,19 @@ function getipxx($ip) {
   $replace = array('');
   return str_replace($find,$replace,$ipxx);
 }
-function sqlconect($ip,$ipxx){
-  $db = new mysqli('127.0.0.1', '数据库名', '用户名', '密码');
+function sqlconect(){
+  $ip = ip();
+  $ipxx = getipxx($ip);
+  $db = new mysqli('127.0.0.1', '1', '1', '1');
   if(mysqli_connect_errno()){
     die;
   }
-  $db-> query("insert into ip (ip,ipxx) values ('$ip','$ipxx');");  
+  if(!$db-> query("insert into ip (ip,ipxx) values ('$ip','$ipxx')")){
+    $db-> query("CREATE TABLE ip (ip varchar(15),ipxx varchar(30),time timestamp)");
+    $db-> query("insert into ip (ip,ipxx) values ('$ip','$ipxx')");
+  }
   mysqli_close($db);
 }
-$ip = ip();
-$ipxx = getipxx($ip);
-sqlconect($ip,$ipxx);
-?>
-<?php
 function addurl($url) {
     if((stristr($url,"https://") == FALSE) && (stristr($url,"http://") == FALSE)){
           $url = "https://".$url;
@@ -61,6 +61,7 @@ function cuturl($url) {
     $key = "/";
     return substr($url,0,strripos($url,$key));;
 }
+//sqlconect();如需开启数据库记录ip，请把//去掉。
 $url = $_REQUEST['a'];
 $url = addurl($url);
 $cuturl = cuturl($url);
